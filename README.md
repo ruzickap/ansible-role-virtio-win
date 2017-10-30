@@ -1,6 +1,6 @@
 # Ansible Role: virtio-win
 
-[![Build Status](https://travis-ci.org/ruzickap/ansible-role-virtio-win.svg?branch=master)](https://travis-ci.org/ruzickap/ansible-role-virtio-win) [![Ansible Galaxy](http://img.shields.io/badge/galaxy-peru.proxy_settings-660198.svg)](https://galaxy.ansible.com/list#/roles/1978)
+[![Build Status](https://travis-ci.org/ruzickap/ansible-role-virtio-win.svg?branch=master)](https://travis-ci.org/ruzickap/ansible-role-virtio-win) [![Ansible Galaxy](http://img.shields.io/badge/galaxy-peru.virtio-win.svg)](https://galaxy.ansible.com/ruzickap/ansible-role-virtio-win/)
 
 This role should help with installing Virtio Windows drivers and spice-guest-tools:
 
