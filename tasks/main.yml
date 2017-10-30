@@ -1,0 +1,9 @@
+---
+# tasks file for virtio-win
+
+# Include variables and define needed variables.
+- name: Include OS-specific variables.
+  include_vars: "{{ ansible_distribution }}.yml"
+
+- import_tasks: virtio-win.yml
+- import_tasks: vdagent-win.yml

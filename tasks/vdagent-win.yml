@@ -1,0 +1,41 @@
+---
+# tasks file for vdagent-win
+
+- name: Check services
+  win_service:
+      name: vdservice
+  register: vdservice_result
+  ignore_errors: yes
+
+- block:
+  - name: Download vdagent
+    win_get_url:
+      url: "https://www.spice-space.org/download/windows/vdagent/vdagent-win-{{ vdagent_win_version }}/vdagent-win-{{ vdagent_win_version }}-x64.zip"
+      dest: "{{ ansible_env.TEMP }}\\vdagent-win.zip"
+
+  - name: Create {{ ansible_env['ProgramFiles(x86)'] }}\\SPICE Guest Tools directory
+    win_file:
+      path: "{{ ansible_env['ProgramFiles(x86)'] }}\\SPICE Guest Tools"
+      state: directory
+
+  - name: Extract vdagent archive
+    win_unzip:
+      src: "{{ ansible_env.TEMP }}\\vdagent-win.zip"
+      dest: "{{ ansible_env.TEMP }}"
+      delete_archive: yes
+
+  - name: Move vdagent binaries to final destination ({{ ansible_env['ProgramFiles(x86)'] }}\\SPICE Guest Tools)
+    win_copy:
+      src: "{{ ansible_env.TEMP }}\\vdagent-win-{{ vdagent_win_version }}-x64\\"
+      dest: "{{ ansible_env['ProgramFiles(x86)'] }}\\SPICE Guest Tools\\"
+      remote_src: yes
+
+  - name: Delete unpacked vdagent binaries
+    win_file:
+      path: "{{ ansible_env.TEMP }}\\vdagent-win-{{ vdagent_win_version }}-{{ ansible_env.PROCESSOR_ARCHITECTURE | lower }}"
+      state: absent
+
+  - name: Install vdagent
+    win_command: "\"{{ ansible_env['ProgramFiles(x86)'] }}\\SPICE Guest Tools\\vdservice.exe\" install"
+
+  when: vdservice_result.state is not defined or vdservice_result.name is not defined

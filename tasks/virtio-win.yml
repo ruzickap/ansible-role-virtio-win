@@ -1,0 +1,81 @@
+---
+# tasks file for virtio-win
+
+- name: Get list of all drivers
+  win_command: driverquery /V
+  changed_when: False
+  register: driver_list
+
+- name: Check if Red Hat certificate is not already installed
+  win_shell: 'Get-ChildItem -Path Cert:\LocalMachine\TrustedPublisher'
+  changed_when: False
+  register: cert_check
+
+- name: Download virtio-win.iso
+  win_get_url:
+    url: "{{ virtio_win_iso_url }}"
+    force: no
+    dest: "{{ ansible_env.TEMP }}\\virtio-win.iso"
+
+- name: Mount virtio-win.iso
+  win_disk_image:
+    image_path: "{{ ansible_env.TEMP }}\\virtio-win.iso"
+  register: win_disk_image
+
+- block:
+  - name: Export Cert powershell
+    win_shell: '$cert = (Get-AuthenticodeSignature "{{ win_disk_image.mount_path }}\Balloon\{{ virtio_driver_directory }}\amd64\blnsvr.exe").SignerCertificate; [System.IO.File]::WriteAllBytes("{{ ansible_env.TEMP }}\redhat.cer", $cert.Export([System.Security.Cryptography.X509Certificates.X509ContentType]::Cert));'
+
+  - name: Install RH certificate to TrustedPublisher certificate store
+    win_command: 'certutil.exe -f -addstore "TrustedPublisher" {{ ansible_env.TEMP }}\redhat.cer'
+  when: not cert_check.stdout | search("Red Hat")
+
+- name: Install the Virtio Network Driver (netkvm)
+  win_command: "pnputil -i -a \"{{ win_disk_image.mount_path }}\\NetKVM\\{{ virtio_driver_directory }}\\{{ ansible_env.PROCESSOR_ARCHITECTURE | lower }}\\*.inf\""
+  when: not driver_list.stdout | search("netkvm")
+
+- name: Install the Virtio Block Driver (viostor)
+  win_command: "pnputil -i -a \"{{ win_disk_image.mount_path }}\\viostor\\{{ virtio_driver_directory }}\\{{ ansible_env.PROCESSOR_ARCHITECTURE | lower }}\\*.inf\""
+  when: not driver_list.stdout | search("viostor")
+
+- name: Install the QXL Graphics Driver (qxldod)
+  win_command: "pnputil -i -a \"{{ win_disk_image.mount_path }}\\qxldod\\{{ virtio_driver_directory }}\\{{ ansible_env.PROCESSOR_ARCHITECTURE | lower }}\\*.inf\""
+  when: not driver_list.stdout | search("qxldod")
+
+- name: Install the Balloon Driver (Balloon)
+  win_command: "pnputil -i -a \"{{ win_disk_image.mount_path }}\\Balloon\\{{ virtio_driver_directory }}\\{{ ansible_env.PROCESSOR_ARCHITECTURE | lower }}\\*.inf\""
+  when: not driver_list.stdout | search("balloon")
+
+- name: Install Virtio RNG driver (viorng)
+  win_command: "pnputil -i -a \"{{ win_disk_image.mount_path }}\\viorng\\{{ virtio_driver_directory }}\\{{ ansible_env.PROCESSOR_ARCHITECTURE | lower }}\\*.inf\""
+  when: not driver_list.stdout | search("viorng")
+
+- name: Install Virtio serial driver (vioserial)
+  win_command: "pnputil -i -a \"{{ win_disk_image.mount_path }}\\vioserial\\{{ virtio_driver_directory }}\\{{ ansible_env.PROCESSOR_ARCHITECTURE | lower }}\\*.inf\""
+  when: not driver_list.stdout | search("vioser")
+
+- name: Install Virtio Input driver (vioinput)
+  win_command: "pnputil -i -a \"{{ win_disk_image.mount_path }}\\vioinput\\{{ virtio_driver_directory }}\\{{ ansible_env.PROCESSOR_ARCHITECTURE | lower }}\\*.inf\""
+  when: not driver_list.stdout | search("vioinput")
+
+- name: Install pvpanic device driver (pvpanic)
+  win_command: "pnputil -i -a \"{{ win_disk_image.mount_path }}\\pvpanic\\{{ virtio_driver_directory }}\\{{ ansible_env.PROCESSOR_ARCHITECTURE | lower }}\\*.inf\""
+  when: not driver_list.stdout | search("pvpanic")
+
+- name: Install Qemu Guest Agent (qemu-ga-x64.msi)
+  win_package:
+    path: "{{ win_disk_image.mount_path }}\\guest-agent\\qemu-ga-x64.msi"
+    creates_path: "{{ ansible_env['ProgramFiles'] }}\\qemu-ga"
+
+- name: Unmount virtio-win.iso
+  win_disk_image:
+    image_path: "{{ ansible_env.TEMP }}\\virtio-win.iso"
+    state: absent
+
+- name: Delete previously downloaded iso and the certificates {{ ansible_env.SystemDrive }}\redhat.cer
+  win_file:
+    path: "{{ item }}"
+    state: absent
+  with_items:
+    - "{{ ansible_env.TEMP }}\\redhat.cer"
+    - "{{ ansible_env.TEMP }}\\virtio-win.iso"

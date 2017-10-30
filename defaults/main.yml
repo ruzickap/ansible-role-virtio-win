@@ -1,0 +1,5 @@
+---
+# defaults file for virtio-win
+
+vdagent_win_version: 0.9.0
+virtio_win_iso_url: https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/latest-virtio/virtio-win.iso

@@ -1,0 +1,19 @@
+---
+dependencies: []
+
+galaxy_info:
+  author: Petr Ruzicka
+  description: Ansible role to install VirtIO drivers for Windows
+  license: "license (BSD, MIT)"
+  min_ansible_version: 2.4
+  platforms:
+    - name: Windows
+      versions:
+        - all
+  galaxy_tags:
+    - drivers
+    - windows
+    - virtio
+    - spice
+
+allow_duplicates: yes
