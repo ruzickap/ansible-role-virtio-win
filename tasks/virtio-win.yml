@@ -67,6 +67,11 @@
     path: "{{ win_disk_image.mount_path }}\\guest-agent\\qemu-ga-x64.msi"
     creates_path: "{{ ansible_env['ProgramFiles'] }}\\qemu-ga"
 
+- name: Install and enable spice-webdavd service (spice-webdavd-x64-latest.msi)
+  win_package:
+    path: "https://www.spice-space.org/download/windows/spice-webdavd/spice-webdavd-x64-latest.msi"
+    creates_path: "{{ ansible_env['ProgramFiles'] }}\\SPICE webdavd"
+
 - name: Unmount virtio-win.iso
   win_disk_image:
     image_path: "{{ ansible_env.TEMP }}\\virtio-win.iso"
