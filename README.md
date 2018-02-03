@@ -28,8 +28,14 @@ Ansible 2.4 or later
 
 Available variables are listed below, along with default values (see `defaults/main.yml`):
 
+    # Find the available versions here https://www.spice-space.org/download/windows/vdagent/
     vdagent_win_version: 0.9.0
+
+    # URL of the virtio-win.iso
     virtio_win_iso_url: https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/latest-virtio/virtio-win.iso
+
+    # Path where the are the files/directories from virtio-win.iso (usually CD-ROM). If this is set, then the virtio-win.iso is going to be downloaded.
+    virtio_win_iso_path: E:\\
 
 ## Dependencies
 
@@ -40,6 +46,9 @@ Windows 64 bit (amd64) (x64)
     - hosts: all
       roles:
          - { role: peru.virtio-win }
+         # or
+         - role: peru.virtio-win
+           virtio_win_iso_path: 'E:\\'
 
 ## License
 
@@ -48,3 +57,4 @@ MIT / BSD
 ## Author Information
 
 This role was created in 2017 by <petr.ruzicka@gmail.com>
+
