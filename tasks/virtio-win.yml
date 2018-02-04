@@ -30,11 +30,17 @@
   when: virtio_win_iso_path is not defined
 
 - block:
-  - name: Export Cert powershell
-    win_shell: '$cert = (Get-AuthenticodeSignature "{{ virtio_win_iso_path }}\Balloon\{{ virtio_driver_directory }}\amd64\blnsvr.exe").SignerCertificate; [System.IO.File]::WriteAllBytes("{{ ansible_env.TEMP }}\redhat.cer", $cert.Export([System.Security.Cryptography.X509Certificates.X509ContentType]::Cert));'
+  - name: Export Cert from qxldod
+    win_shell: '$cert = (Get-AuthenticodeSignature "{{ virtio_win_iso_path }}\qxldod\{{ virtio_driver_directory }}\amd64\qxldod.cat").SignerCertificate; [System.IO.File]::WriteAllBytes("{{ ansible_env.TEMP }}\redhat_qxldod.cer", $cert.Export([System.Security.Cryptography.X509Certificates.X509ContentType]::Cert));'
 
-  - name: Install RH certificate to TrustedPublisher certificate store
-    win_command: 'certutil.exe -f -addstore "TrustedPublisher" {{ ansible_env.TEMP }}\redhat.cer'
+  - name: Export Cert from balloon
+    win_shell: '$cert = (Get-AuthenticodeSignature "{{ virtio_win_iso_path }}\Balloon\{{ virtio_driver_directory }}\amd64\blnsvr.exe").SignerCertificate; [System.IO.File]::WriteAllBytes("{{ ansible_env.TEMP }}\redhat_balloon.cer", $cert.Export([System.Security.Cryptography.X509Certificates.X509ContentType]::Cert));'
+
+  - name: Install RH certificate (qxldod) to TrustedPublisher certificate store
+    win_command: 'certutil.exe -f -addstore "TrustedPublisher" {{ ansible_env.TEMP }}\redhat_qxldod.cer'
+
+  - name: Install RH certificate (Balloon) to TrustedPublisher certificate store
+    win_command: 'certutil.exe -f -addstore "TrustedPublisher" {{ ansible_env.TEMP }}\redhat_balloon.cer'
   when: not cert_check.stdout | search("Red Hat")
 
 - name: Install the Virtio Network Driver (netkvm)
@@ -85,10 +91,11 @@
     state: absent
   when: win_disk_image.mount_path is defined
 
-- name: Delete previously downloaded iso and the certificates {{ ansible_env.SystemDrive }}\redhat.cer
+- name: Delete previously downloaded iso and the certificates {{ ansible_env.SystemDrive }}\{redhat_balloon.cer,redhat_qxldod.cer}
   win_file:
     path: "{{ item }}"
     state: absent
   with_items:
-    - "{{ ansible_env.TEMP }}\\redhat.cer"
+    - "{{ ansible_env.TEMP }}\\redhat_balloon.cer"
+    - "{{ ansible_env.TEMP }}\\redhat_qxldod.cer"
     - "{{ ansible_env.TEMP }}\\virtio-win.iso"
