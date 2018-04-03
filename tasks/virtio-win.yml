@@ -41,39 +41,39 @@
 
   - name: Install RH certificate (Balloon) to TrustedPublisher certificate store
     win_command: 'certutil.exe -f -addstore "TrustedPublisher" {{ ansible_env.TEMP }}\redhat_balloon.cer'
-  when: not cert_check.stdout | search("Red Hat")
+  when: cert_check.stdout is not search("Red Hat")
 
 - name: Install the Virtio Network Driver (netkvm)
   win_command: "pnputil -i -a \"{{ virtio_win_iso_path }}\\NetKVM\\{{ virtio_driver_directory }}\\{{ ansible_env.PROCESSOR_ARCHITECTURE | lower }}\\*.inf\""
-  when: not driver_list.stdout | search("netkvm")
+  when: driver_list.stdout is not search("netkvm")
 
 - name: Install the Virtio Block Driver (viostor)
   win_command: "pnputil -i -a \"{{ virtio_win_iso_path }}\\viostor\\{{ virtio_driver_directory }}\\{{ ansible_env.PROCESSOR_ARCHITECTURE | lower }}\\*.inf\""
-  when: not driver_list.stdout | search("viostor")
+  when: driver_list.stdout is not search("viostor")
 
 - name: Install the QXL Graphics Driver (qxldod)
   win_command: "pnputil -i -a \"{{ virtio_win_iso_path }}\\qxldod\\{{ virtio_driver_directory }}\\{{ ansible_env.PROCESSOR_ARCHITECTURE | lower }}\\*.inf\""
-  when: not driver_list.stdout | search("qxldod")
+  when: driver_list.stdout is not search("qxldod")
 
 - name: Install the Balloon Driver (Balloon)
   win_command: "pnputil -i -a \"{{ virtio_win_iso_path }}\\Balloon\\{{ virtio_driver_directory }}\\{{ ansible_env.PROCESSOR_ARCHITECTURE | lower }}\\*.inf\""
-  when: not driver_list.stdout | search("balloon")
+  when: driver_list.stdout is not search("balloon")
 
 - name: Install Virtio RNG driver (viorng)
   win_command: "pnputil -i -a \"{{ virtio_win_iso_path }}\\viorng\\{{ virtio_driver_directory }}\\{{ ansible_env.PROCESSOR_ARCHITECTURE | lower }}\\*.inf\""
-  when: not driver_list.stdout | search("viorng")
+  when: driver_list.stdout is not search("viorng")
 
 - name: Install Virtio serial driver (vioserial)
   win_command: "pnputil -i -a \"{{ virtio_win_iso_path }}\\vioserial\\{{ virtio_driver_directory }}\\{{ ansible_env.PROCESSOR_ARCHITECTURE | lower }}\\*.inf\""
-  when: not driver_list.stdout | search("vioser")
+  when: driver_list.stdout is not search("vioser")
 
 - name: Install Virtio Input driver (vioinput)
   win_command: "pnputil -i -a \"{{ virtio_win_iso_path }}\\vioinput\\{{ virtio_driver_directory }}\\{{ ansible_env.PROCESSOR_ARCHITECTURE | lower }}\\*.inf\""
-  when: not driver_list.stdout | search("vioinput")
+  when: driver_list.stdout is not search("vioinput")
 
 - name: Install pvpanic device driver (pvpanic)
   win_command: "pnputil -i -a \"{{ virtio_win_iso_path }}\\pvpanic\\{{ virtio_driver_directory }}\\{{ ansible_env.PROCESSOR_ARCHITECTURE | lower }}\\*.inf\""
-  when: not driver_list.stdout | search("pvpanic")
+  when: driver_list.stdout is not search("pvpanic")
 
 - name: Install Qemu Guest Agent (qemu-ga-x64.msi)
   win_package:
