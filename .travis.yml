@@ -5,7 +5,7 @@ python: "2.7"
 # Use the new container infrastructure
 sudo: false
 
-# Install ansible
+# Install python-pip
 addons:
   apt:
     packages:
