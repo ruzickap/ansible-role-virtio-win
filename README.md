@@ -4,7 +4,7 @@
 [![Ansible Galaxy](https://img.shields.io/ansible/role/21593.svg)](https://galaxy.ansible.com/ruzickap/virtio-win/)
 [![Ansible Role](https://img.shields.io/ansible/role/d/21593.svg)](https://galaxy.ansible.com/ruzickap/virtio-win/)
 
-Ansible Galaxy: https://galaxy.ansible.com/ruzickap/virtio-win/
+Ansible Galaxy: [https://galaxy.ansible.com/ruzickap/virtio-win/](https://galaxy.ansible.com/ruzickap/virtio-win/)
 
 This role should help with installing Virtio Windows drivers and spice-guest-tools:
 
@@ -22,7 +22,7 @@ This role should help with installing Virtio Windows drivers and spice-guest-too
 
 It's handy if you are running Windows on the KVM hypervisor, because you will get the best performance using VirtIO drivers + tools.
 
-# Requirements
+## Requirements
 
 Ansible 2.4 or later
 
