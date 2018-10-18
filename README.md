@@ -2,7 +2,6 @@
 
 [![Build Status](https://travis-ci.org/ruzickap/ansible-role-virtio-win.svg?branch=master)](https://travis-ci.org/ruzickap/ansible-role-virtio-win)
 [![Ansible Galaxy](https://img.shields.io/ansible/role/21593.svg)](https://galaxy.ansible.com/ruzickap/virtio-win/)
-[![Ansible Role](https://img.shields.io/ansible/role/d/21593.svg)](https://galaxy.ansible.com/ruzickap/virtio-win/)
 
 Ansible Galaxy: [https://galaxy.ansible.com/ruzickap/virtio-win/](https://galaxy.ansible.com/ruzickap/virtio-win/)
 
@@ -24,7 +23,7 @@ It's handy if you are running Windows on the KVM hypervisor, because you will ge
 
 ## Requirements
 
-Ansible 2.4 or later
+Ansible 2.7 or later
 
 ## Role Variables
 
