@@ -29,18 +29,19 @@
     virtio_win_iso_path: "{{ win_disk_image.mount_path }}"
   when: virtio_win_iso_path is not defined
 
-- block:
-  - name: Export Cert from qxldod
-    win_shell: '$cert = (Get-AuthenticodeSignature "{{ virtio_win_iso_path }}\qxldod\{{ virtio_driver_directory }}\amd64\qxldod.cat").SignerCertificate; [System.IO.File]::WriteAllBytes("{{ ansible_env.TEMP }}\redhat_qxldod.cer", $cert.Export([System.Security.Cryptography.X509Certificates.X509ContentType]::Cert));'
+- name: Install RH certificate
+  block:
+    - name: Export Cert from qxldod
+      win_shell: '$cert = (Get-AuthenticodeSignature "{{ virtio_win_iso_path }}\qxldod\{{ virtio_driver_directory }}\amd64\qxldod.cat").SignerCertificate; [System.IO.File]::WriteAllBytes("{{ ansible_env.TEMP }}\redhat_qxldod.cer", $cert.Export([System.Security.Cryptography.X509Certificates.X509ContentType]::Cert));'
 
-  - name: Export Cert from balloon
-    win_shell: '$cert = (Get-AuthenticodeSignature "{{ virtio_win_iso_path }}\Balloon\{{ virtio_driver_directory }}\amd64\blnsvr.exe").SignerCertificate; [System.IO.File]::WriteAllBytes("{{ ansible_env.TEMP }}\redhat_balloon.cer", $cert.Export([System.Security.Cryptography.X509Certificates.X509ContentType]::Cert));'
+    - name: Export Cert from balloon
+      win_shell: '$cert = (Get-AuthenticodeSignature "{{ virtio_win_iso_path }}\Balloon\{{ virtio_driver_directory }}\amd64\blnsvr.exe").SignerCertificate; [System.IO.File]::WriteAllBytes("{{ ansible_env.TEMP }}\redhat_balloon.cer", $cert.Export([System.Security.Cryptography.X509Certificates.X509ContentType]::Cert));'
 
-  - name: Install RH certificate (qxldod) to TrustedPublisher certificate store
-    win_command: 'certutil.exe -f -addstore "TrustedPublisher" {{ ansible_env.TEMP }}\redhat_qxldod.cer'
+    - name: Install RH certificate (qxldod) to TrustedPublisher certificate store
+      win_command: 'certutil.exe -f -addstore "TrustedPublisher" {{ ansible_env.TEMP }}\redhat_qxldod.cer'
 
-  - name: Install RH certificate (Balloon) to TrustedPublisher certificate store
-    win_command: 'certutil.exe -f -addstore "TrustedPublisher" {{ ansible_env.TEMP }}\redhat_balloon.cer'
+    - name: Install RH certificate (Balloon) to TrustedPublisher certificate store
+      win_command: 'certutil.exe -f -addstore "TrustedPublisher" {{ ansible_env.TEMP }}\redhat_balloon.cer'
   when: cert_check.stdout is not search("Red Hat")
 
 - name: Install the Virtio Network Driver (netkvm)

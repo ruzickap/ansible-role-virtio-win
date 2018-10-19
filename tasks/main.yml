@@ -1,9 +1,17 @@
 ---
 # tasks file for virtio-win
 
-# Include variables and define needed variables.
-- name: Include OS-specific variables.
-  include_vars: "{{ ansible_distribution }}.yml"
+- name: Check if variable file exists (if ansible_distribution is supported)
+  stat:
+    path: "{{ ansible_distribution }}.yml"
+  register: vars_file
 
-- import_tasks: virtio-win.yml
-- import_tasks: vdagent-win.yml
+- name: Install vdagent and virtio drivers
+  block:
+    # Include variables and define mandatory variables
+    - name: Include OS-specific variables
+      include_vars: "{{ ansible_distribution }}.yml"
+
+    - import_tasks: virtio-win.yml
+    - import_tasks: vdagent-win.yml
+  when: vars_file.stat.exists

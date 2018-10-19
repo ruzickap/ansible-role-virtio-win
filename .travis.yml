@@ -1,27 +1,18 @@
 ---
 language: python
-python: "2.7"
+services: docker
 
-# Use the new container infrastructure
-sudo: false
-
-# Install python-pip
-addons:
-  apt:
-    packages:
-    - python-pip
+env:
+  matrix:
+    - MOLECULE_DISTRO: centos7
 
 install:
-  # Install ansible
-  - pip install ansible ansible-lint
-
-  # Create ansible.cfg with correct roles_path
-  - printf '[defaults]\nroles_path=../' >ansible.cfg
+  # Install test dependencies.
+  - pip install molecule docker
 
 script:
-  # Basic role syntax check
-  - ansible-playbook tests/test.yml -i tests/inventory --syntax-check
-  - ansible-lint tasks/*.yml
+  # Run tests.
+  - molecule test
 
 notifications:
   webhooks: https://galaxy.ansible.com/api/v1/notifications/
