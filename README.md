@@ -1,6 +1,6 @@
 # Ansible Role: virtio-win
 
-[![Build Status](https://travis-ci.com/ruzickap/ansible-role-virtio-win.svg?branch=master)](https://travis-ci.org/ruzickap/ansible-role-virtio-win)
+[![Build Status](https://travis-ci.com/ruzickap/ansible-role-virtio-win.svg?branch=master)](https://travis-ci.com/ruzickap/ansible-role-virtio-win)
 [![Ansible Galaxy](https://img.shields.io/ansible/role/21593.svg)](https://galaxy.ansible.com/ruzickap/virtio-win/)
 
 Ansible Galaxy: [https://galaxy.ansible.com/ruzickap/virtio-win/](https://galaxy.ansible.com/ruzickap/virtio-win/)
