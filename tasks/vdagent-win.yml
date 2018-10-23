@@ -5,7 +5,6 @@
   win_service:
     name: vdservice
   register: vdservice_result
-  ignore_errors: yes
 
 - name: Install vdagent
   block:
