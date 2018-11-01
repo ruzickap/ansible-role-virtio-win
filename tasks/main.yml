@@ -2,8 +2,9 @@
 # tasks file for virtio-win
 
 - name: Check if variable file exists (if ansible_distribution is supported)
-  stat:
+  win_stat:
     path: "{{ ansible_distribution }}.yml"
+    get_checksum: no
   register: vars_file
 
 - name: Install vdagent and virtio drivers
