@@ -53,7 +53,7 @@ Windows 64 bit (amd64) (x64)
 
 ## License
 
-MIT / BSD
+MIT
 
 ## Author Information
 
