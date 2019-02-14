@@ -5,7 +5,8 @@
 
 Ansible Galaxy: [https://galaxy.ansible.com/ruzickap/virtio-win/](https://galaxy.ansible.com/ruzickap/virtio-win/)
 
-This role should help with installing Virtio Windows drivers and spice-guest-tools:
+This role should help with installing Virtio Windows drivers
+and spice-guest-tools:
 
 * Virtio Network Driver ([netkvm](https://github.com/virtio-win/kvm-guest-drivers-windows/tree/master/NetKVM))
 * Virtio Block Driver ([viostor](https://github.com/virtio-win/kvm-guest-drivers-windows/tree/master/viostor))
@@ -19,7 +20,8 @@ This role should help with installing Virtio Windows drivers and spice-guest-too
 * Qemu Guest Agent ([qemu-ga-x64](https://wiki.libvirt.org/page/Qemu_guest_agent))
 * SPICE Guest Tools ([vdagent-win](https://www.spice-space.org))
 
-It's handy if you are running Windows on the KVM hypervisor, because you will get the best performance using VirtIO drivers + tools.
+It's handy if you are running Windows on the KVM hypervisor, because you will
+get the best performance using VirtIO drivers + tools.
 
 ## Requirements
 
@@ -27,16 +29,19 @@ Ansible 2.7 or later
 
 ## Role Variables
 
-Available variables are listed below, along with default values (see `defaults/main.yml`):
+Available variables are listed below, along with default values
+(see `defaults/main.yml`):
 
-    # Find the available versions here https://www.spice-space.org/download/windows/vdagent/
-    vdagent_win_version: 0.9.0
+```yaml
+# Find the available versions here https://www.spice-space.org/download/windows/vdagent/
+vdagent_win_version: 0.9.0
 
-    # URL of the virtio-win.iso
-    virtio_win_iso_url: https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/latest-virtio/virtio-win.iso
+# URL of the virtio-win.iso
+virtio_win_iso_url: https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/latest-virtio/virtio-win.iso
 
-    # Path where the are the files/directories from virtio-win.iso (usually CD-ROM). If this is set, then the virtio-win.iso is going to be downloaded.
-    virtio_win_iso_path: E:\\
+# Path where the are the files/directories from virtio-win.iso (usually CD-ROM). If this is set, then the virtio-win.iso is going to be downloaded.
+virtio_win_iso_path: E:\\
+```
 
 ## Dependencies
 
@@ -44,12 +49,14 @@ Windows 64 bit (amd64) (x64)
 
 ## Example Playbook
 
-    - hosts: all
-      roles:
-         - { role: ruzickap.virtio-win }
-         # or
-         - role: ruzickap.virtio-win
-           virtio_win_iso_path: 'E:\\'
+```yaml
+- hosts: all
+  roles:
+    - { role: ruzickap.virtio-win }
+    # or
+    - role: ruzickap.virtio-win
+      virtio_win_iso_path: 'E:\\'
+```
 
 ## License
 
@@ -57,4 +64,4 @@ MIT
 
 ## Author Information
 
-This role was created in 2017 by <petr.ruzicka@gmail.com>
+This role was created in 2017 by [petr.ruzicka@gmail.com](mailto:petr.ruzicka@gmail.com)
