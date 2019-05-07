@@ -78,7 +78,7 @@
 
 - name: Install Qemu Guest Agent (qemu-ga-x64.msi)
   win_package:
-    path: "{{ virtio_win_iso_path }}\\guest-agent\\qemu-ga-x64.msi"
+    path: "{{ virtio_win_iso_path }}\\guest-agent\\qemu-ga-x86_64.msi"
     creates_path: "{{ ansible_env['ProgramFiles'] }}\\qemu-ga"
 
 - name: Install and enable spice-webdavd service (spice-webdavd-x64-latest.msi)
