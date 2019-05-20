@@ -13,6 +13,7 @@ matrix:
     - name: "CentOS 7 Tests"
       env:
         - MOLECULE_DISTRO: centos7
+        - MOLECULE_DOCKER_COMMAND: /usr/lib/systemd/systemd
     - name: "Markdown test"
       install:
         # Install markdownlint and markdown-link-check
