@@ -1,5 +1,16 @@
 # Changelog
 
+## [v0.1.0](https://github.com/ruzickap/ansible-role-virtio-win/compare/v0.0.1...v0.1.0) (2020-09-17)
+
+- Exclude rule 106 (role name does not match...) from ansible-lint [`#9`](https://github.com/ruzickap/ansible-role-virtio-win/pull/9)
+- Replace markdown link checker by action-my-markdown-link-checker [`#8`](https://github.com/ruzickap/ansible-role-virtio-win/pull/8)
+- Replace markdown linter [`#7`](https://github.com/ruzickap/ansible-role-virtio-win/pull/7)
+- Use latest version of super-linter [`#6`](https://github.com/ruzickap/ansible-role-virtio-win/pull/6)
+- Add super-linter [`#5`](https://github.com/ruzickap/ansible-role-virtio-win/pull/5)
+- Upgrade shellcheck to latest version [`#4`](https://github.com/ruzickap/ansible-role-virtio-win/pull/4)
+- Add colours to molecule and ansible [`#3`](https://github.com/ruzickap/ansible-role-virtio-win/pull/3)
+- CHANGELOG file update [`#2`](https://github.com/ruzickap/ansible-role-virtio-win/pull/2)
+
 ## v0.0.1 (2020-05-09)
 
 - Improve GH action files markdown.yml + molecule.yml [`f7263c6`](https://github.com/ruzickap/ansible-role-virtio-win/commit/f7263c6e12582f6a3d1ee98bd126c1d2f4e9b819)
