@@ -1,5 +1,11 @@
 # Changelog
 
+## [v0.1.1](https://github.com/ruzickap/ansible-role-virtio-win/compare/v0.1.0...v0.1.1) (2020-11-19)
+
+- Fix CD [`#12`](https://github.com/ruzickap/ansible-role-virtio-win/pull/12)
+- Add retry part for spice-webdavd installation [`#11`](https://github.com/ruzickap/ansible-role-virtio-win/pull/11)
+- CHANGELOG file update [`#10`](https://github.com/ruzickap/ansible-role-virtio-win/pull/10)
+
 ## [v0.1.0](https://github.com/ruzickap/ansible-role-virtio-win/compare/v0.0.1...v0.1.0) (2020-09-17)
 
 - Exclude rule 106 (role name does not match...) from ansible-lint [`#9`](https://github.com/ruzickap/ansible-role-virtio-win/pull/9)
