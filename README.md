@@ -17,7 +17,7 @@ and spice-guest-tools:
 * Virtio serial driver ([vioserial](https://github.com/virtio-win/kvm-guest-drivers-windows/tree/master/vioserial))
 * Virtio Input driver ([vioinput](https://github.com/virtio-win/kvm-guest-drivers-windows/tree/master/vioinput))
 * pvpanic device driver ([pvpanic](https://github.com/virtio-win/kvm-guest-drivers-windows/tree/master/pvpanic))
-* Qemu Guest Agent ([qemu-ga-x64](https://wiki.libvirt.org/page/Qemu_guest_agent))
+* Qemu Guest Agent ([qemu-ga-x86_64](https://wiki.libvirt.org/page/Qemu_guest_agent))
 * SPICE Guest Tools ([vdagent-win](https://www.spice-space.org))
 
 It's handy if you are running Windows on the KVM hypervisor, because you will

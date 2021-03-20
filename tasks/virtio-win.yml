@@ -76,7 +76,7 @@
   win_command: "pnputil -i -a \"{{ virtio_win_iso_path }}\\pvpanic\\{{ virtio_driver_directory }}\\{{ ansible_env.PROCESSOR_ARCHITECTURE | lower }}\\*.inf\""
   when: driver_list.stdout is not search("pvpanic")
 
-- name: Install Qemu Guest Agent (qemu-ga-x64.msi)
+- name: Install Qemu Guest Agent (qemu-ga-x86_64.msi)
   win_package:
     path: "{{ virtio_win_iso_path }}\\guest-agent\\qemu-ga-x86_64.msi"
     creates_path: "{{ ansible_env['ProgramFiles'] }}\\qemu-ga"

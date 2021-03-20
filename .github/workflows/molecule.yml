@@ -8,29 +8,38 @@ on:
     branches:
       - master
 
+defaults:
+  run:
+    working-directory: 'ansible-role-virtio-win'
+
 jobs:
   molecule-checks:
     name: Molecule checks
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        env:
-          - MOLECULE_DISTRO: centos7
+        distro:
+          - centos8
+          - centos7
+          - ubuntu1804
+          - debian10
 
     steps:
       - uses: actions/checkout@v2
+        with:
+          path: 'ansible-role-virtio-win'
 
-      - name: Update repositories
-        run: sudo apt update
-
-      - name: Install Setuptools
-        run: sudo apt-get install -y python3-setuptools
+      - name: Set up Python 3.
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
 
       - name: Install test dependencies
-        run: sudo -H pip3 install ansible-lint molecule[docker] docker yamllint
+        run: pip3 install ansible molecule[docker] docker
 
       - name: Run tests
         env:
           PY_COLORS: '1'
           ANSIBLE_FORCE_COLOR: '1'
+          MOLECULE_DISTRO: ${{ matrix.distro }}
         run: molecule test
