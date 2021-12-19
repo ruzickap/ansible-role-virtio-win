@@ -1,5 +1,6 @@
 ---
 galaxy_info:
+  role_name: virtio-win
   author: Petr Ruzicka
   description: Role to install Windows virtio + spice drivers used for running Windows in KVM VMs
 

@@ -17,7 +17,7 @@ name: Lint Code Base
 on:
   push:
     branches-ignore:
-      - 'master'
+      - main
 
 ###############
 # Set the Job #
@@ -47,3 +47,4 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           VALIDATE_JSCPD: false
+          FILTER_REGEX_EXCLUDE: CHANGELOG.md
