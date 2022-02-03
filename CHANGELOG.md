@@ -1,10 +1,19 @@
 # Changelog
 
+## [v0.1.2](https://github.com/ruzickap/ansible-role-virtio-win/compare/v0.1.1...v0.1.2)
+
+- Move from master to main [`#21`](https://github.com/ruzickap/ansible-role-virtio-win/pull/21)
+- Add missing link to Win Server 2022 [`#20`](https://github.com/ruzickap/ansible-role-virtio-win/pull/20)
+- Add Microsoft Windows Server 2022 Standard Evaluation [`#19`](https://github.com/ruzickap/ansible-role-virtio-win/pull/19)
+- Use super-linter:slim [`#17`](https://github.com/ruzickap/ansible-role-virtio-win/pull/17)
+- Upgrade GH Actions versions [`#16`](https://github.com/ruzickap/ansible-role-virtio-win/pull/16)
+- Add Windows 10 LTSC Evaluation [`#15`](https://github.com/ruzickap/ansible-role-virtio-win/pull/15)
+- Change x64 -&gt; x86_64 and fix tests [`134e83b`](https://github.com/ruzickap/ansible-role-virtio-win/commit/134e83b5512b78d6d1441d7fc4532c91f1ca21ad)
+
 ## [v0.1.1](https://github.com/ruzickap/ansible-role-virtio-win/compare/v0.1.0...v0.1.1) (2020-11-19)
 
 - Fix CD [`#12`](https://github.com/ruzickap/ansible-role-virtio-win/pull/12)
 - Add retry part for spice-webdavd installation [`#11`](https://github.com/ruzickap/ansible-role-virtio-win/pull/11)
-- CHANGELOG file update [`#10`](https://github.com/ruzickap/ansible-role-virtio-win/pull/10)
 
 ## [v0.1.0](https://github.com/ruzickap/ansible-role-virtio-win/compare/v0.0.1...v0.1.0) (2020-09-17)
 
@@ -15,7 +24,6 @@
 - Add super-linter [`#5`](https://github.com/ruzickap/ansible-role-virtio-win/pull/5)
 - Upgrade shellcheck to latest version [`#4`](https://github.com/ruzickap/ansible-role-virtio-win/pull/4)
 - Add colours to molecule and ansible [`#3`](https://github.com/ruzickap/ansible-role-virtio-win/pull/3)
-- CHANGELOG file update [`#2`](https://github.com/ruzickap/ansible-role-virtio-win/pull/2)
 
 ## v0.0.1 (2020-05-09)
 
