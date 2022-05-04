@@ -1,6 +1,10 @@
 # Changelog
 
-## [v0.1.2](https://github.com/ruzickap/ansible-role-virtio-win/compare/v0.1.1...v0.1.2)
+## [v0.1.3](https://github.com/ruzickap/ansible-role-virtio-win/compare/v0.1.2...v0.1.3)
+
+- Add 2k22 [`9b0673b`](https://github.com/ruzickap/ansible-role-virtio-win/commit/9b0673bba41e0a20caaf591d2132ee9f75e5e400)
+
+## [v0.1.2](https://github.com/ruzickap/ansible-role-virtio-win/compare/v0.1.1...v0.1.2) (2022-02-03)
 
 - Move from master to main [`#21`](https://github.com/ruzickap/ansible-role-virtio-win/pull/21)
 - Add missing link to Win Server 2022 [`#20`](https://github.com/ruzickap/ansible-role-virtio-win/pull/20)
