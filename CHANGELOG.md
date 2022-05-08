@@ -1,6 +1,10 @@
 # Changelog
 
-## [v0.1.3](https://github.com/ruzickap/ansible-role-virtio-win/compare/v0.1.2...v0.1.3)
+## [v0.1.4](https://github.com/ruzickap/ansible-role-virtio-win/compare/v0.1.3...v0.1.4)
+
+- Remove old certificates and vdagent update [`b099c3c`](https://github.com/ruzickap/ansible-role-virtio-win/commit/b099c3c8d26156418ab26cc1f3ef21c9f0e1d079)
+
+## [v0.1.3](https://github.com/ruzickap/ansible-role-virtio-win/compare/v0.1.2...v0.1.3) (2022-05-04)
 
 - Add 2k22 [`9b0673b`](https://github.com/ruzickap/ansible-role-virtio-win/commit/9b0673bba41e0a20caaf591d2132ee9f75e5e400)
 
