@@ -11,7 +11,7 @@
   changed_when: False
   register: cert_check
 
-- name: Download virtio-win.iso
+- name: Download virtio-win.iso to {{ ansible_env.TEMP }}
   win_get_url:
     url: "{{ virtio_win_iso_url }}"
     force: no
@@ -31,14 +31,8 @@
 
 - name: Install RH certificate
   block:
-    - name: Export Cert from qxldod
-      win_shell: '$cert = (Get-AuthenticodeSignature "{{ virtio_win_iso_path }}\qxldod\{{ virtio_driver_directory }}\amd64\qxldod.cat").SignerCertificate; [System.IO.File]::WriteAllBytes("{{ ansible_env.TEMP }}\redhat_qxldod.cer", $cert.Export([System.Security.Cryptography.X509Certificates.X509ContentType]::Cert));'
-
     - name: Export Cert from balloon
       win_shell: '$cert = (Get-AuthenticodeSignature "{{ virtio_win_iso_path }}\Balloon\{{ virtio_driver_directory }}\amd64\blnsvr.exe").SignerCertificate; [System.IO.File]::WriteAllBytes("{{ ansible_env.TEMP }}\redhat_balloon.cer", $cert.Export([System.Security.Cryptography.X509Certificates.X509ContentType]::Cert));'
-
-    - name: Install RH certificate (qxldod) to TrustedPublisher certificate store
-      win_command: 'certutil.exe -f -addstore "TrustedPublisher" {{ ansible_env.TEMP }}\redhat_qxldod.cer'
 
     - name: Install RH certificate (Balloon) to TrustedPublisher certificate store
       win_command: 'certutil.exe -f -addstore "TrustedPublisher" {{ ansible_env.TEMP }}\redhat_balloon.cer'
@@ -52,9 +46,21 @@
   win_command: "pnputil -i -a \"{{ virtio_win_iso_path }}\\viostor\\{{ virtio_driver_directory }}\\{{ ansible_env.PROCESSOR_ARCHITECTURE | lower }}\\*.inf\""
   when: driver_list.stdout is not search("viostor")
 
+# This workaround should be removed...
+# Using old 2k19 driver for Microsoft Windows Server 2022, because 2k22 is not ready yet
 - name: Install the QXL Graphics Driver (qxldod)
   win_command: "pnputil -i -a \"{{ virtio_win_iso_path }}\\qxldod\\{{ virtio_driver_directory }}\\{{ ansible_env.PROCESSOR_ARCHITECTURE | lower }}\\*.inf\""
-  when: driver_list.stdout is not search("qxldod")
+  when:
+    - driver_list.stdout is not search("qxldod")
+    - ansible_distribution is not search("Microsoft Windows Server 2022 Datacenter Evaluation")
+
+# This workaround should be removed...
+# Using old 2k19 driver for Microsoft Windows Server 2022, because 2k22 is not ready yet
+- name: Install the QXL Graphics Driver (qxldod) - Win Server 2022
+  win_command: "pnputil -i -a \"{{ virtio_win_iso_path }}\\qxldod\\2k19\\{{ ansible_env.PROCESSOR_ARCHITECTURE | lower }}\\*.inf\""
+  when:
+    - driver_list.stdout is not search("qxldod")
+    - ansible_distribution is search("Microsoft Windows Server 2022 Datacenter Evaluation")
 
 - name: Install the Balloon Driver (Balloon)
   win_command: "pnputil -i -a \"{{ virtio_win_iso_path }}\\Balloon\\{{ virtio_driver_directory }}\\{{ ansible_env.PROCESSOR_ARCHITECTURE | lower }}\\*.inf\""
@@ -72,9 +78,9 @@
   win_command: "pnputil -i -a \"{{ virtio_win_iso_path }}\\vioinput\\{{ virtio_driver_directory }}\\{{ ansible_env.PROCESSOR_ARCHITECTURE | lower }}\\*.inf\""
   when: driver_list.stdout is not search("vioinput")
 
-- name: Install pvpanic device driver (pvpanic)
-  win_command: "pnputil -i -a \"{{ virtio_win_iso_path }}\\pvpanic\\{{ virtio_driver_directory }}\\{{ ansible_env.PROCESSOR_ARCHITECTURE | lower }}\\*.inf\""
-  when: driver_list.stdout is not search("pvpanic")
+# - name: Install pvpanic device driver (pvpanic)
+#   win_command: "pnputil -i -a \"{{ virtio_win_iso_path }}\\pvpanic\\{{ virtio_driver_directory }}\\{{ ansible_env.PROCESSOR_ARCHITECTURE | lower }}\\*.inf\""
+#   when: driver_list.stdout is not search("pvpanic")
 
 - name: Install Qemu Guest Agent (qemu-ga-x86_64.msi)
   win_package:
