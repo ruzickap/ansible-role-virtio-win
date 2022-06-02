@@ -52,7 +52,7 @@
   win_command: "pnputil -i -a \"{{ virtio_win_iso_path }}\\qxldod\\{{ virtio_driver_directory }}\\{{ ansible_env.PROCESSOR_ARCHITECTURE | lower }}\\*.inf\""
   when:
     - driver_list.stdout is not search("qxldod")
-    - ansible_distribution is not search("Microsoft Windows Server 2022 Datacenter Evaluation")
+    - ansible_distribution is not search("Microsoft Windows Server 2022")
 
 # This workaround should be removed...
 # Using old 2k19 driver for Microsoft Windows Server 2022, because 2k22 is not ready yet
@@ -60,7 +60,7 @@
   win_command: "pnputil -i -a \"{{ virtio_win_iso_path }}\\qxldod\\2k19\\{{ ansible_env.PROCESSOR_ARCHITECTURE | lower }}\\*.inf\""
   when:
     - driver_list.stdout is not search("qxldod")
-    - ansible_distribution is search("Microsoft Windows Server 2022 Datacenter Evaluation")
+    - ansible_distribution is search("Microsoft Windows Server 2022")
 
 - name: Install the Balloon Driver (Balloon)
   win_command: "pnputil -i -a \"{{ virtio_win_iso_path }}\\Balloon\\{{ virtio_driver_directory }}\\{{ ansible_env.PROCESSOR_ARCHITECTURE | lower }}\\*.inf\""
