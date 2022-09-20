@@ -26,7 +26,7 @@
 
 - name: Set the virtio_win_iso_path from predefined value or mounted ISO
   set_fact:
-    virtio_win_iso_path: "{{ win_disk_image.mount_path }}"
+    virtio_win_iso_path: "{{ win_disk_image.mount_paths.0 }}"
   when: virtio_win_iso_path is not defined
 
 - name: Install RH certificate
@@ -98,7 +98,7 @@
   win_disk_image:
     image_path: "{{ ansible_env.TEMP }}\\virtio-win.iso"
     state: absent
-  when: win_disk_image.mount_path is defined
+  when: win_disk_image.mount_paths.0 is defined
 
 - name: Delete previously downloaded iso and the certificates {{ ansible_env.SystemDrive }}\{redhat_balloon.cer,redhat_qxldod.cer}
   win_file:
