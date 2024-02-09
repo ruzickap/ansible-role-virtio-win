@@ -9,4 +9,8 @@
 
     - import_tasks: virtio-win.yml
     - import_tasks: vdagent-win.yml
+  rescue:
+    - name: Print when errors
+      ansible.builtin.debug:
+        msg: "I caught an error..."
   when: ansible_os_family == "Windows"

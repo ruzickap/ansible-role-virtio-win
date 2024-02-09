@@ -37,4 +37,8 @@
 
     - name: Install vdagent
       win_command: "\"{{ ansible_env['ProgramFiles(x86)'] }}\\SPICE Guest Tools\\vdservice.exe\" install"
+  rescue:
+    - name: Print when errors
+      ansible.builtin.debug:
+        msg: "I caught an error..."
   when: vdservice_result.state is not defined or vdservice_result.name is not defined

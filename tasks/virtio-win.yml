@@ -36,6 +36,10 @@
 
     - name: Install RH certificate (Balloon) to TrustedPublisher certificate store
       win_command: 'certutil.exe -f -addstore "TrustedPublisher" {{ ansible_env.TEMP }}\redhat_balloon.cer'
+  rescue:
+    - name: Print when errors
+      ansible.builtin.debug:
+        msg: "I caught an error..."
   when: cert_check.stdout is not search("Red Hat")
 
 - name: Install the Virtio Network Driver (netkvm)
