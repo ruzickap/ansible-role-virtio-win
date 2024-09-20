@@ -34,7 +34,12 @@ jobs:
           python-version: 3.x
 
       - name: Install test dependencies
-        run: pip3 install ansible molecule-plugins[docker] docker
+        run: |
+          set -euxo pipefail
+          pip3 install ansible molecule-plugins[docker] docker
+          if [ -f "${GITHUB_REPOSITORY#*/}/requirements.yml" ]; then
+            ansible-galaxy install -r "${GITHUB_REPOSITORY#*/}/requirements.yml"
+          fi
 
       - name: Run tests
         env:

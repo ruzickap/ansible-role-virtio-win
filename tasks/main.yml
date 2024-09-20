@@ -2,15 +2,18 @@
 # tasks file for virtio-win
 
 - name: Install vdagent and virtio drivers
+  when: ansible_os_family == "Windows"
   block:
     # Include variables and define mandatory variables
     - name: Include OS-specific variables
-      include_vars: "{{ ansible_distribution }}.yml"
+      ansible.builtin.include_vars: "{{ ansible_distribution }}.yml"
 
-    - import_tasks: virtio-win.yml
-    - import_tasks: vdagent-win.yml
+    - name: Define mandatory variables
+      ansible.builtin.import_tasks: virtio-win.yml
+
+    - name: Install vdagent
+      ansible.builtin.import_tasks: vdagent-win.yml
   rescue:
     - name: Print when errors
       ansible.builtin.debug:
-        msg: "I caught an error..."
-  when: ansible_os_family == "Windows"
+        msg: I caught an error...
