@@ -6,10 +6,10 @@ on:
     inputs:
       dryRun:
         type: boolean
-        description: "Dry-Run"
+        description: Dry-Run
       logLevel:
         type: choice
-        description: "Log-Level"
+        description: Log-Level
         default: debug
         options:
           - info
@@ -20,7 +20,7 @@ on:
       - main
       - "!renovate/*"
   schedule:
-    - cron: "0 0-3 * * 0"
+    - cron: 0 0-3 * * 0
 
 env:
   # https://docs.renovatebot.com/troubleshooting/#log-debug-levels
@@ -35,7 +35,7 @@ env:
   # Run renovate in dry-run mode if executed in branches other than main - prevents versions in PRs/branches from being updated
   RENOVATE_DRY_RUN: "${{ inputs.dryRun || ( github.head_ref || github.ref_name ) != 'main' || false }}"
   # Renovate Automerge
-  RENOVATE_AUTOMERGE_TYPE: "branch"
+  RENOVATE_AUTOMERGE_TYPE: branch
   RENOVATE_AUTOMERGE: "true"
 
 permissions: read-all
