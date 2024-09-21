@@ -1,0 +1,6 @@
+---
+collections:
+  - name: ansible.windows
+    version: 2.5.0
+  - name: community.windows
+    version: 2.3.0

@@ -2,58 +2,59 @@
 # tasks file for virtio-win
 
 - name: Get list of all drivers
-  win_command: driverquery /V
-  changed_when: False
+  ansible.windows.win_command: driverquery /V
+  changed_when: false
   register: driver_list
 
 - name: Check if Red Hat certificate is not already installed
-  win_shell: 'Get-ChildItem -Path Cert:\LocalMachine\TrustedPublisher'
-  changed_when: False
+  ansible.windows.win_shell: Get-ChildItem -Path Cert:\LocalMachine\TrustedPublisher
+  changed_when: false
   register: cert_check
 
 - name: Download virtio-win.iso to {{ ansible_env.TEMP }}
-  win_get_url:
+  ansible.windows.win_get_url:
     url: "{{ virtio_win_iso_url }}"
-    force: no
+    force: false
     dest: "{{ ansible_env.TEMP }}\\virtio-win.iso"
   when: virtio_win_iso_path is not defined
 
 - name: Mount virtio-win.iso
-  win_disk_image:
+  community.windows.win_disk_image:
     image_path: "{{ ansible_env.TEMP }}\\virtio-win.iso"
   register: win_disk_image
   when: virtio_win_iso_path is not defined
 
 - name: Set the virtio_win_iso_path from predefined value or mounted ISO
-  set_fact:
+  ansible.builtin.set_fact:
     virtio_win_iso_path: "{{ win_disk_image.mount_path }}"
   when: virtio_win_iso_path is not defined
 
 - name: Install RH certificate
+  when: cert_check.stdout is not search("Red Hat")
+
   block:
     - name: Export Cert from balloon
-      win_shell: '$cert = (Get-AuthenticodeSignature "{{ virtio_win_iso_path }}\Balloon\{{ virtio_driver_directory }}\amd64\blnsvr.exe").SignerCertificate; [System.IO.File]::WriteAllBytes("{{ ansible_env.TEMP }}\redhat_balloon.cer", $cert.Export([System.Security.Cryptography.X509Certificates.X509ContentType]::Cert));'
+      ansible.windows.win_shell: $cert = (Get-AuthenticodeSignature "{{ virtio_win_iso_path }}\Balloon\{{ virtio_driver_directory }}\amd64\blnsvr.exe").SignerCertificate; [System.IO.File]::WriteAllBytes("{{ ansible_env.TEMP }}\redhat_balloon.cer", $cert.Export([System.Security.Cryptography.X509Certificates.X509ContentType]::Cert));
 
     - name: Install RH certificate (Balloon) to TrustedPublisher certificate store
-      win_command: 'certutil.exe -f -addstore "TrustedPublisher" {{ ansible_env.TEMP }}\redhat_balloon.cer'
+      ansible.windows.win_command: certutil.exe -f -addstore "TrustedPublisher" {{ ansible_env.TEMP }}\redhat_balloon.cer
   rescue:
     - name: Print when errors
       ansible.builtin.debug:
-        msg: "I caught an error..."
-  when: cert_check.stdout is not search("Red Hat")
+        msg: I caught an error...
 
 - name: Install the Virtio Network Driver (netkvm)
-  win_command: "pnputil -i -a \"{{ virtio_win_iso_path }}\\NetKVM\\{{ virtio_driver_directory }}\\{{ ansible_env.PROCESSOR_ARCHITECTURE | lower }}\\*.inf\""
+  ansible.windows.win_command: pnputil -i -a "{{ virtio_win_iso_path }}\NetKVM\{{ virtio_driver_directory }}\{{ ansible_env.PROCESSOR_ARCHITECTURE | lower }}\*.inf"
   when: driver_list.stdout is not search("netkvm")
 
 - name: Install the Virtio Block Driver (viostor)
-  win_command: "pnputil -i -a \"{{ virtio_win_iso_path }}\\viostor\\{{ virtio_driver_directory }}\\{{ ansible_env.PROCESSOR_ARCHITECTURE | lower }}\\*.inf\""
+  ansible.windows.win_command: pnputil -i -a "{{ virtio_win_iso_path }}\viostor\{{ virtio_driver_directory }}\{{ ansible_env.PROCESSOR_ARCHITECTURE | lower }}\*.inf"
   when: driver_list.stdout is not search("viostor")
 
 # This workaround should be removed...
 # Using old 2k19 driver for Microsoft Windows Server 2022, because 2k22 is not ready yet
 - name: Install the QXL Graphics Driver (qxldod)
-  win_command: "pnputil -i -a \"{{ virtio_win_iso_path }}\\qxldod\\{{ virtio_driver_directory }}\\{{ ansible_env.PROCESSOR_ARCHITECTURE | lower }}\\*.inf\""
+  ansible.windows.win_command: pnputil -i -a "{{ virtio_win_iso_path }}\qxldod\{{ virtio_driver_directory }}\{{ ansible_env.PROCESSOR_ARCHITECTURE | lower }}\*.inf"
   when:
     - driver_list.stdout is not search("qxldod")
     - ansible_distribution is not search("Microsoft Windows Server 2022")
@@ -61,51 +62,51 @@
 # This workaround should be removed...
 # Using old 2k19 driver for Microsoft Windows Server 2022, because 2k22 is not ready yet
 - name: Install the QXL Graphics Driver (qxldod) - Win Server 2022
-  win_command: "pnputil -i -a \"{{ virtio_win_iso_path }}\\qxldod\\2k19\\{{ ansible_env.PROCESSOR_ARCHITECTURE | lower }}\\*.inf\""
+  ansible.windows.win_command: pnputil -i -a "{{ virtio_win_iso_path }}\qxldod\2k19\{{ ansible_env.PROCESSOR_ARCHITECTURE | lower }}\*.inf"
   when:
     - driver_list.stdout is not search("qxldod")
     - ansible_distribution is search("Microsoft Windows Server 2022")
 
 - name: Install the Balloon Driver (Balloon)
-  win_command: "pnputil -i -a \"{{ virtio_win_iso_path }}\\Balloon\\{{ virtio_driver_directory }}\\{{ ansible_env.PROCESSOR_ARCHITECTURE | lower }}\\*.inf\""
+  ansible.windows.win_command: pnputil -i -a "{{ virtio_win_iso_path }}\Balloon\{{ virtio_driver_directory }}\{{ ansible_env.PROCESSOR_ARCHITECTURE | lower }}\*.inf"
   when: driver_list.stdout is not search("balloon")
 
 - name: Install Virtio RNG driver (viorng)
-  win_command: "pnputil -i -a \"{{ virtio_win_iso_path }}\\viorng\\{{ virtio_driver_directory }}\\{{ ansible_env.PROCESSOR_ARCHITECTURE | lower }}\\*.inf\""
+  ansible.windows.win_command: pnputil -i -a "{{ virtio_win_iso_path }}\viorng\{{ virtio_driver_directory }}\{{ ansible_env.PROCESSOR_ARCHITECTURE | lower }}\*.inf"
   when: driver_list.stdout is not search("viorng")
 
 - name: Install Virtio serial driver (vioserial)
-  win_command: "pnputil -i -a \"{{ virtio_win_iso_path }}\\vioserial\\{{ virtio_driver_directory }}\\{{ ansible_env.PROCESSOR_ARCHITECTURE | lower }}\\*.inf\""
+  ansible.windows.win_command: pnputil -i -a "{{ virtio_win_iso_path }}\vioserial\{{ virtio_driver_directory }}\{{ ansible_env.PROCESSOR_ARCHITECTURE | lower }}\*.inf"
   when: driver_list.stdout is not search("vioser")
 
 - name: Install Virtio Input driver (vioinput)
-  win_command: "pnputil -i -a \"{{ virtio_win_iso_path }}\\vioinput\\{{ virtio_driver_directory }}\\{{ ansible_env.PROCESSOR_ARCHITECTURE | lower }}\\*.inf\""
+  ansible.windows.win_command: pnputil -i -a "{{ virtio_win_iso_path }}\vioinput\{{ virtio_driver_directory }}\{{ ansible_env.PROCESSOR_ARCHITECTURE | lower }}\*.inf"
   when: driver_list.stdout is not search("vioinput")
 
 # - name: Install pvpanic device driver (pvpanic)
-#   win_command: "pnputil -i -a \"{{ virtio_win_iso_path }}\\pvpanic\\{{ virtio_driver_directory }}\\{{ ansible_env.PROCESSOR_ARCHITECTURE | lower }}\\*.inf\""
+#   ansible.windows.win_command: "pnputil -i -a \"{{ virtio_win_iso_path }}\\pvpanic\\{{ virtio_driver_directory }}\\{{ ansible_env.PROCESSOR_ARCHITECTURE | lower }}\\*.inf\""
 #   when: driver_list.stdout is not search("pvpanic")
 
 - name: Install Qemu Guest Agent (qemu-ga-x86_64.msi)
-  win_package:
+  ansible.windows.win_package:
     path: "{{ virtio_win_iso_path }}\\guest-agent\\qemu-ga-x86_64.msi"
     creates_path: "{{ ansible_env['ProgramFiles'] }}\\qemu-ga"
 
 - name: Install and enable spice-webdavd service (spice-webdavd-x64-latest.msi)
-  win_package:
-    path: "https://www.spice-space.org/download/windows/spice-webdavd/spice-webdavd-x64-latest.msi"
+  ansible.windows.win_package:
+    path: https://www.spice-space.org/download/windows/spice-webdavd/spice-webdavd-x64-latest.msi
     creates_path: "{{ ansible_env['ProgramFiles'] }}\\SPICE webdavd"
   register: result
   until: result is succeeded
 
 - name: Unmount virtio-win.iso
-  win_disk_image:
+  community.windows.win_disk_image:
     image_path: "{{ ansible_env.TEMP }}\\virtio-win.iso"
     state: absent
   when: win_disk_image.mount_path is defined
 
-- name: Delete previously downloaded iso and the certificates {{ ansible_env.SystemDrive }}\{redhat_balloon.cer,redhat_qxldod.cer}
-  win_file:
+- name: Delete previously downloaded iso and the certificates redhat_balloon.cer and redhat_qxldod.cer
+  ansible.windows.win_file:
     path: "{{ item }}"
     state: absent
   with_items:
