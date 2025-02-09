@@ -37,7 +37,7 @@ jobs:
           chmod a+x README.sh
 
       - name: 💡 MegaLinter
-        uses: oxsecurity/megalinter@d8c95fc6f2237031fb9e9322b0f97100168afa6e # v8.2.0
+        uses: oxsecurity/megalinter@ec124f7998718d79379a3c5b39f5359952baf21d # v8.4.2
         env:
           GITHUB_COMMENT_REPORTER: false
           # Disabled due to error: [GitHub Status Reporter] Error posting Status for REPOSITORY with ...: 403
