@@ -3,4 +3,4 @@ collections:
   - name: ansible.windows
     version: 2.8.0
   - name: community.windows
-    version: 2.4.0
+    version: 3.0.0
