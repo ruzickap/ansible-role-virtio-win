@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.2.0](https://github.com/ruzickap/ansible-role-virtio-win/compare/v0.1.4...v0.2.0) (2025-05-06)
+
+
+### Features
+
+* add github action defaults ([#66](https://github.com/ruzickap/ansible-role-virtio-win/issues/66)) ([9775731](https://github.com/ruzickap/ansible-role-virtio-win/commit/9775731e653bf36216f59981814b586f0d939138))
+* add GitHub default templates ([#64](https://github.com/ruzickap/ansible-role-virtio-win/issues/64)) ([8e0e556](https://github.com/ruzickap/ansible-role-virtio-win/commit/8e0e556ee7daac2e3ad418c5a3688ada3f44d048))
+* **gh_actions:** replace stale + add commitlint ([63245c2](https://github.com/ruzickap/ansible-role-virtio-win/commit/63245c224284fd83878374074c705b36e8780438))
+* **gh-actions:** add lint-pr-title ([7f42091](https://github.com/ruzickap/ansible-role-virtio-win/commit/7f42091b6adf27deab81d5f219dc56046df3873b))
+* **gh:** add default GitHub repo files ([#60](https://github.com/ruzickap/ansible-role-virtio-win/issues/60)) ([4cbf561](https://github.com/ruzickap/ansible-role-virtio-win/commit/4cbf5612acc448473975333eb3953cfef4efdeec))
+* **gh:** add default GitHub repo files ([#61](https://github.com/ruzickap/ansible-role-virtio-win/issues/61)) ([28c5553](https://github.com/ruzickap/ansible-role-virtio-win/commit/28c55539ef3a3bcf12d8724623a6af218d4a269f))
+* **gh:** add default github repo files ([#75](https://github.com/ruzickap/ansible-role-virtio-win/issues/75)) ([c82b3b2](https://github.com/ruzickap/ansible-role-virtio-win/commit/c82b3b263b0d291aba3cb3305804e21286f45bba))
+* **gh:** add default github repo files ([#87](https://github.com/ruzickap/ansible-role-virtio-win/issues/87)) ([cac2647](https://github.com/ruzickap/ansible-role-virtio-win/commit/cac264777ee8f8a8137d2756e035ce169890fff6))
+* **gha:** unify GHA - renovate, megalinter, markdown, and others ([#58](https://github.com/ruzickap/ansible-role-virtio-win/issues/58)) ([c697a47](https://github.com/ruzickap/ansible-role-virtio-win/commit/c697a4754e3a7f2a7f2ec2a51756862f02b40aa4))
+
 ## [v0.1.4](https://github.com/ruzickap/ansible-role-virtio-win/compare/v0.1.3...v0.1.4)
 
 - Remove old certificates and vdagent update [`b099c3c`](https://github.com/ruzickap/ansible-role-virtio-win/commit/b099c3c8d26156418ab26cc1f3ef21c9f0e1d079)
